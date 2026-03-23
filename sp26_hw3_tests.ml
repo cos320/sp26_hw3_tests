@@ -36,4 +36,7 @@ let student_tests : (string * string * string) list = [
     (* provided demo example *)
     ("demo_test.oat", "abc", "abcabc0");
     ("demo_test.oat", "defg", "defgdefg0");
+    (* Colin Baird, Jishnu Roychoudhury *)
+    ("nac_k.oat", "", "50");
+    ("nac_k.oat", "test2", "impossible0");
   ]
