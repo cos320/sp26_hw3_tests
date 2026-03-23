@@ -39,4 +39,9 @@ let student_tests : (string * string * string) list = [
     (* Colin Baird, Jishnu Roychoudhury *)
     ("nac_k.oat", "", "50");
     ("nac_k.oat", "test2", "impossible0");
+
+    (* Ayush and Isaac *)
+    ("big_decimal.oat", "", "135.75 0");
+    ("big_decimal.oat", "a", "575.31 0");
+    ("big_decimal.oat", "a a", "652.43 0");
   ]

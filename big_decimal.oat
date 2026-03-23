@@ -1,0 +1,173 @@
+/*
+* Submission for Ayush Jain and Isaac Badipe
+* Implements a non-negative big decimal, the
+* test cases are run based on the number of 
+* command line arguments. 
+*/
+
+int max(int a, int b) {
+    if (a < b) {
+        return b;
+    } 
+
+    return a;
+}
+
+int[] big_decimal(int scale, int n, int[] digits) {
+    var bd = new int[n + 2];
+    bd[0] = scale;
+    bd[1] = n;
+
+    for (var i = 0; i < n; i = i + 1;) {
+        bd[i + 2] = digits[i];
+    }
+
+    return bd;
+}
+
+int get_digit(int[] bd, int pos, int scale) {
+    var curr_scale = bd[0];
+    var curr_len = bd[1];
+
+    var buffer = scale - curr_scale;
+    if (pos < buffer) {
+        return 0;
+    }
+
+    var actual_pos = pos - buffer;
+    if (actual_pos >= curr_len) {
+        return 0;
+    }
+
+    var res = bd[2 + (curr_len - actual_pos - 1)];
+    return res;
+}
+
+int[] add(int[] bd1, int[] bd2) {
+    var scale_1 = bd1[0];
+    var scale_2 = bd2[0];
+    var len_1 = bd1[1];
+    var len_2 = bd2[1];
+
+    var scale = max(scale_1, scale_2);
+    var int_len_1 = len_1 - scale_1;
+    var int_len_2 = len_2 - scale_2;
+
+    var int_len = max(int_len_1, int_len_2);
+    var temp_len = int_len + scale;
+
+    var temp_digit = new int[temp_len + 2];
+    var carry = 0;
+
+    for (var i = 0; i < temp_len; i = i + 1;) {
+        var d1 = get_digit(bd1, i, scale);
+        var d2 = get_digit(bd2, i, scale);
+
+        var d = d1 + d2 + carry;
+        if (d >= 10) {
+            temp_digit[temp_len - i] = d - 10;
+            carry = 1;
+        } else {
+            temp_digit[temp_len - i] = d;
+            carry = 0;
+        }
+    }
+
+    temp_digit[0] = carry;
+    var len = temp_len + 1;
+    var i = 0;
+
+    var done = false;
+    while (!done) {
+        if (i < temp_len) {
+            if (temp_digit[i] == 0) {
+                i = i + 1;
+                len = len - 1;
+            } else {
+                done = true;
+            }
+        } else {
+            done = true;
+        }
+    }
+
+    if (len <= 0) {
+        len = 1;
+        i = temp_len;
+    }
+
+    var bd = new int[len];
+    for (var j = 0; j < len; j = j + 1;) {
+        bd[j] = temp_digit[i + j];
+    }
+
+    return big_decimal(scale, len, bd);
+}
+
+int program(int argc, string[] argv) {
+    var d1 = new int[5];
+    var d2 = new int[3];
+
+    if (argc == 1) {
+        d1[0] = 1;
+        d1[1] = 2;
+        d1[2] = 3;
+        d1[3] = 4;
+        d1[4] = 5;
+
+        d2[0] = 1;
+        d2[1] = 2;
+        d2[2] = 3;
+
+        /* 135.75 */
+    } else if (argc == 2) {
+        d1[0] = 5;
+        d1[1] = 4;
+        d1[2] = 3;
+        d1[3] = 2;
+        d1[4] = 1;
+
+        d2[0] = 3;
+        d2[1] = 2;
+        d2[2] = 1;
+
+        /* 575.31 */
+    } else if (argc == 3) {
+        d1[0] = 5;
+        d1[1] = 5;
+        d1[2] = 6;
+        d1[3] = 1;
+        d1[4] = 3;
+
+        d2[0] = 9;
+        d2[1] = 6;
+        d2[2] = 3;
+
+        /* 652.43 */
+    } else {
+        print_string("INVALID");
+        return 0;
+    }
+
+    
+    var bd1 = big_decimal(2, 5, d1);
+    var bd2 = big_decimal(1, 3, d2);
+    var res = add(bd1, bd2);
+
+    var scale = res[0];
+    var len = res[1];
+
+    for (var i = 0; i < len - scale; i = i + 1;) {
+        print_int(res[2 + i]);
+    }
+
+    print_string(".");
+
+    for (var i = len - scale; i < len; i = i + 1;) {
+        print_int(res[2 + i]);
+    }
+
+    print_string(" ");
+
+    return 0;
+}
