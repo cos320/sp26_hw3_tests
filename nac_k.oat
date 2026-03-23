@@ -52,53 +52,60 @@ int solve(int[] rects, int n) {
         for (var j = i; j < n; j = j + 1;) {
             for (var a = 0; a < 4; a = a + 1;) {
                 for (var b = 0; b < 4; b = b + 1;) {
-                    if ( !(i == j & a == b) ) {
-                        var x1 = rects[(4*i) + 2*(a >> 1)];
-                        var y1 = rects[(4*i) + 1 + 2*(a [&] 1)];
-                        var x2 = rects[(4*j) + 2*(b >> 1)];
-                        var y2 = rects[(4*j) + 1 + 2*(b [&] 1)];
-                        var sides = get_sides(rects, n, x1, y1, x2, y2);
-                        if (sides[0] != 2) {
-                            var n_pos = 0;
-                            var n_neg = 0;
+                    if (i != j) { 
+                        /* for some reason Oat doesn't allow binops of bools */
+                        /* this can't be intended, maybe a mistake in backend */
+                        if (a != b) {
+                            var x1 = rects[(4*i) + 2*(a >> 1)];
+                            var y1 = rects[(4*i) + 1 + 2*(a [&] 1)];
+                            var x2 = rects[(4*j) + 2*(b >> 1)];
+                            var y2 = rects[(4*j) + 1 + 2*(b [&] 1)];
+                            var sides = get_sides(rects, n, x1, y1, x2, y2);
+                            if (sides[0] != 2) {
+                                var n_pos = 0;
+                                var n_neg = 0;
 
-                            for (var k = 0; k < n; k = k + 1;) {
-                                if (sides[k] == 1) {
-                                    n_pos = n_pos + 1;
-                                }
-                                else {
-                                    n_neg = n_neg + 1;
-                                }
-                            }
-                            if (n_pos > 0 & n_neg > 0) {
-                                var rects_pos = new int[4 * n_pos];
-                                var rects_neg = new int[4 * n_neg];
-                                var cnt_pos = 0;
-                                var cnt_neg = 0;
                                 for (var k = 0; k < n; k = k + 1;) {
                                     if (sides[k] == 1) {
-                                        rects_pos[4*cnt_pos] = rects[4*k];
-                                        rects_pos[(4*cnt_pos)+1] = rects[(4*k)+1];
-                                        rects_pos[(4*cnt_pos)+2] = rects[(4*k)+2];
-                                        rects_pos[(4*cnt_pos)+3] = rects[(4*k)+3];
-                                        cnt_pos = cnt_pos + 1;
+                                        n_pos = n_pos + 1;
                                     }
                                     else {
-                                        rects_neg[4*cnt_neg] = rects[4*k];
-                                        rects_neg[(4*cnt_neg)+1] = rects[(4*k)+1];
-                                        rects_neg[(4*cnt_neg)+2] = rects[(4*k)+2];
-                                        rects_neg[(4*cnt_neg)+3] = rects[(4*k)+3];
-                                        cnt_neg = cnt_neg + 1;
+                                        n_neg = n_neg + 1;
                                     }
                                 }
+                                if (n_pos > 0 & n_neg > 0) {
+                                    var rects_pos = new int[4 * n_pos];
+                                    var rects_neg = new int[4 * n_neg];
+                                    var cnt_pos = 0;
+                                    var cnt_neg = 0;
+                                    for (var k = 0; k < n; k = k + 1;) {
+                                        if (sides[k] == 1) {
+                                            rects_pos[4*cnt_pos] = rects[4*k];
+                                            rects_pos[(4*cnt_pos)+1] = rects[(4*k)+1];
+                                            rects_pos[(4*cnt_pos)+2] = rects[(4*k)+2];
+                                            rects_pos[(4*cnt_pos)+3] = rects[(4*k)+3];
+                                            cnt_pos = cnt_pos + 1;
+                                        }
+                                        else {
+                                            rects_neg[4*cnt_neg] = rects[4*k];
+                                            rects_neg[(4*cnt_neg)+1] = rects[(4*k)+1];
+                                            rects_neg[(4*cnt_neg)+2] = rects[(4*k)+2];
+                                            rects_neg[(4*cnt_neg)+3] = rects[(4*k)+3];
+                                            cnt_neg = cnt_neg + 1;
+                                        }
+                                    }
 
-                                var res_pos = solve(rects_pos, n_pos);
-                                var res_neg = solve(rects_neg, n_neg);
+                                    var res_pos = solve(rects_pos, n_pos);
+                                    var res_neg = solve(rects_neg, n_neg);
 
-                                if (res_neg == -1 | res_pos == -1) {
-                                    return -1;
+                                    if (res_pos == -1) {
+                                        return -1;
+                                    }
+                                    if (res_neg == -1) {
+                                        return -1;
+                                    }
+                                    return res_neg + res_pos + 1;
                                 }
-                                return res_neg + res_pos + 1;
                             }
                         }
                     }
