@@ -1,0 +1,87 @@
+global n = 312;
+global f = 6364136223846793005;
+global w = 64;
+global r = 31;
+global a = 5403634167711393303;
+global u = 29;
+global d = 6148914691236517205;
+global m = 156;
+global s = 17;
+global b = 8202884508482404352;
+global t = 37;
+global c = 2270628950310912;
+global l = 43;
+
+global umask = 0;
+global lmask = 0;
+
+int xor(int a, int b) {
+    return ((~a) [&] b) [|] (a [&] (~b));
+}
+
+void init(int[] state, int seed) {
+    state[0] = seed;
+    for (var i = 1; i < n; i=i+1;) {
+        seed = f * xor(seed, (seed >> (w-2))) + i;
+        state[i] = seed;
+    }
+    return;
+}
+
+int[] gen(int[] state, int k) {
+    var j = k - (n-1);
+    if (j < 0) {
+        j = j + n;
+    }
+
+    var x = (state[k] [&] umask) [|] (state[j] [&] lmask);
+    var xA = x >> 1;
+    if ((x [&] 1) == 1) {
+        xA = xor(xA, a);     
+    }
+
+    j = k - (n-m);
+    if (j < 0) {
+        j = j + n;
+    }
+
+    x = xor(state[j], xA);
+    state[k] = x;
+    k = k+1;
+
+    if (k >= n) {
+        k = 0;
+    }
+    var res = new int[] {0, k};
+
+    var y = xor(x, ((x >> u) [&] d));
+    y = xor(y, ((y << s) [&] b));
+    y = xor(y, ((y << t) [&] c));
+    var z = xor(y,  (y >> l));
+
+    res[0] = z;
+    return res;
+}
+
+
+int program(int argc, string[] argv) {
+    umask = ((-1) << r);
+    lmask = ((-1) >> (w-r));
+    a = -a;
+    c = -c;
+
+    var seed = length_of_string(argv[1]);
+    var state = new int[n];
+    var state_index = 0;
+    var result = 0;
+
+    init(state, seed);
+    for (var i = 0; i < 10; i = i + 1;) {
+        var output = gen(state, state_index);
+        result = output[0];
+        state_index = output[1];
+    }
+
+    print_int(result);
+    return 0;
+}

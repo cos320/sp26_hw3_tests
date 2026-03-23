@@ -44,4 +44,9 @@ let student_tests : (string * string * string) list = [
     ("big_decimal.oat", "", "135.75 0");
     ("big_decimal.oat", "a", "575.31 0");
     ("big_decimal.oat", "a a", "652.43 0");
+
+    (* Raheem Idowu *)
+    ("mt19937_64.oat", "6", "-67287963618453421920");
+    ("mt19937_64.oat", "67", "-57951761824575148100");
+    ("mt19937_64.oat", "6767676767", "69277503470687894370");
   ]
