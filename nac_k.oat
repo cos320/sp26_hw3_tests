@@ -1,0 +1,149 @@
+/* Colin Baird, Jishnu Roychoudhury */
+/* ICPC NAC 2026 K: Kindergarten Revisited */
+
+int rx1(int[] rects, int i) { return rects[4*i]; }
+int ry1(int[] rects, int i) { return rects[4*i + 1]; }
+int rx2(int[] rects, int i) { return rects[4*i + 2]; }
+int ry2(int[] rects, int i) { return rects[4*i + 3]; }
+
+int cross_product(int x1, int y1, int x2, int y2) {
+    return (x1*y2) - (y1*x2);
+}
+
+int[] get_sides(int[] rects, int n, int x1, int y1, int x2, int y2) {
+    var ret = new int[n];
+    /* 0: can be either side. 1: positive side. -1: negative side */
+
+    var vec1x = x2 - x1;
+    var vec1y = y2 - y1;
+
+    for (var i = 0; i < n; i = i + 1;) {
+        for (var d = 0; d < 4; d = d + 1;) {
+            var p2x = rects[(4*i) + 2*(d >> 1)];
+            var p2y = rects[(4*i) + 1 + 2*(d [&] 1)];
+            var vec2x = p2x - x1;
+            var vec2y = p2y - y1;
+            
+            var cross = cross_product(vec1x, vec1y, vec2x, vec2y);
+            if (cross < 0) {
+                if (ret[i] == 1) {
+                    ret[0] = 2;
+                    return ret;
+                }
+                ret[i] = -1;
+            } else if (cross > 0) {
+                if (ret[i] == -1) {
+                    ret[0] = 2;
+                    return ret;
+                }
+                ret[i] = 1;
+            }
+        }
+    }
+    return ret;
+}
+
+int solve(int[] rects, int n) {
+    if (n == 1) {
+        return 0;
+    }
+
+    for (var i = 0; i < n; i = i + 1;) {
+        for (var j = i; j < n; j = j + 1;) {
+            for (var a = 0; a < 4; a = a + 1;) {
+                for (var b = 0; b < 4; b = b + 1;) {
+                    if ( !(i == j & a == b) ) {
+                        var x1 = rects[(4*i) + 2*(a >> 1)];
+                        var y1 = rects[(4*i) + 1 + 2*(a [&] 1)];
+                        var x2 = rects[(4*j) + 2*(b >> 1)];
+                        var y2 = rects[(4*j) + 1 + 2*(b [&] 1)];
+                        var sides = get_sides(rects, n, x1, y1, x2, y2);
+                        if (sides[0] != 2) {
+                            var n_pos = 0;
+                            var n_neg = 0;
+
+                            for (var k = 0; k < n; k = k + 1;) {
+                                if (sides[k] == 1) {
+                                    n_pos = n_pos + 1;
+                                }
+                                else {
+                                    n_neg = n_neg + 1;
+                                }
+                            }
+                            if (n_pos > 0 & n_neg > 0) {
+                                var rects_pos = new int[4 * n_pos];
+                                var rects_neg = new int[4 * n_neg];
+                                var cnt_pos = 0;
+                                var cnt_neg = 0;
+                                for (var k = 0; k < n; k = k + 1;) {
+                                    if (sides[k] == 1) {
+                                        rects_pos[4*cnt_pos] = rects[4*k];
+                                        rects_pos[(4*cnt_pos)+1] = rects[(4*k)+1];
+                                        rects_pos[(4*cnt_pos)+2] = rects[(4*k)+2];
+                                        rects_pos[(4*cnt_pos)+3] = rects[(4*k)+3];
+                                        cnt_pos = cnt_pos + 1;
+                                    }
+                                    else {
+                                        rects_neg[4*cnt_neg] = rects[4*k];
+                                        rects_neg[(4*cnt_neg)+1] = rects[(4*k)+1];
+                                        rects_neg[(4*cnt_neg)+2] = rects[(4*k)+2];
+                                        rects_neg[(4*cnt_neg)+3] = rects[(4*k)+3];
+                                        cnt_neg = cnt_neg + 1;
+                                    }
+                                }
+
+                                var res_pos = solve(rects_pos, n_pos);
+                                var res_neg = solve(rects_neg, n_neg);
+
+                                if (res_neg == -1 | res_pos == -1) {
+                                    return -1;
+                                }
+                                return res_neg + res_pos + 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+int sample1() {
+    var rects = new int[]{
+        -1, 1, 0, 4,
+        1, 0, 3, 1,
+        2, 2, 3, 3,
+        4, 0, 5, 3,
+        2, 4, 5, 5,
+        6, 3, 7, 5
+    };
+    var n = 6;
+    return solve(rects, n); /* 5 */
+}
+
+int sample2() {
+    var rects = new int[]{
+        0, -1, 1, 2,
+        2, -1, 5, 0,
+        -10, 3, 3, 4,
+        4, 1, 5, 13
+    };
+    var n = 4;
+    return solve(rects, n); /* -1 (impossible) */
+}
+
+int program(int argc, string[] argv) {
+    var res = 0;
+    if (argc == 1) {
+        res =  sample1();
+    } else {
+        res = sample2();
+    }
+    if (res == -1) {
+        print_string("impossible");
+    } else {
+        print_string(string_of_int(res));
+    }
+    return 0;
+}
