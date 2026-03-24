@@ -1,0 +1,232 @@
+/*
+Name: Ben Aepli and Vedant Badoni
+*/
+global shift_scale = 16;
+
+int[] vec3_new()
+{
+    return (new int[3]);
+}
+
+int[] vec3_from(int x, int y, int z)
+{
+    var result = vec3_new();
+    result[0] = x;
+    result[1] = y;
+    result[2] = z;
+    return result;
+}
+
+void vec3_assign(int[] target, int[] source)
+{
+    target[0] = source[0];
+    target[1] = source[1];
+    target[2] = source[2];
+    return;
+}
+
+void vec3_add(int[] a, int[] b, int[] out)
+{
+    out[0] = a[0] + b[0];
+    out[1] = a[1] + b[1];
+    out[2] = a[2] + b[2];
+    return;
+}
+
+void vec3_subtract(int[] a, int[] b, int[] out)
+{
+    out[0] = a[0] - b[0];
+    out[1] = a[1] - b[1];
+    out[2] = a[2] - b[2];
+    return;
+}
+
+int scaledMultiply(int a, int b)
+{
+    return (a * b) >> shift_scale;
+}
+
+void vec3_scale(int[] a, int factor, int[] out)
+{
+    out[0] = scaledMultiply(a[0], factor);
+    out[1] = scaledMultiply(a[1], factor);
+    out[2] = scaledMultiply(a[2], factor);
+    return;
+}
+
+int vec3_dot(int[] a, int[] b)
+{
+    var x = scaledMultiply(a[0], b[0]);
+    var y = scaledMultiply(a[1], b[1]);
+    var z = scaledMultiply(a[2], b[2]);
+    return x + y + z;
+}
+
+int[] vec3_copy(int[] a)
+{
+    return vec3_from(a[0], a[1], a[2]);
+}
+
+int[] image_getColor(int[] image, int width, int height, int i, int j)
+{
+    var start = 3 * (i * width + j);
+    var result = vec3_new();
+    result[0] = image[start];
+    result[1] = image[start + 1];
+    result[2] = image[start + 2];
+    return result;
+}
+
+int[] ray_getPosition(int[] ray)
+{
+    var result = vec3_new();
+    result[0] = ray[0];
+    result[1] = ray[1];
+    result[2] = ray[2];
+    return result;
+}
+
+int[] ray_getDirection(int[] ray)
+{
+    var result = vec3_new();
+    result[0] = ray[3];
+    result[1] = ray[4];
+    result[2] = ray[5];
+    return result;
+}
+
+int[] ray_create()
+{
+    return (new int[6]);
+}
+
+void ray_from(int[] position, int[] direction, int[] out)
+{
+    out[0] = position[0];
+    out[1] = position[1];
+    out[2] = position[2];
+    out[3] = direction[0];
+    out[4] = direction[1];
+    out[5] = direction[2];
+    return;
+}
+
+bool sphere_hit(int[] center, int radius, int[] ray, int[] tmp)
+{
+    vec3_subtract(ray_getPosition(ray), center, tmp);
+    var dir = ray_getDirection(ray);
+
+    var a = vec3_dot(dir, dir);
+    var b = 2 * vec3_dot(tmp, dir);
+    var c = vec3_dot(tmp, tmp) - scaledMultiply(radius, radius);
+
+    var discriminant = scaledMultiply(b, b) - (4 * scaledMultiply(a, c));
+
+    /*
+    Note: I'm not actually going to compute the actual root,
+    just because it's a pain without division.
+    So we're actually going be intersecting both in front and behind the camera.
+    */
+    return (discriminant >= 0);
+}
+
+void write_ppm(int[] image, int width, int height)
+{
+    print_string("P3\n");
+    print_int(width);
+    print_string(" ");
+    print_int(height);
+    print_string("\n");
+
+    print_string("255\n");
+
+    for (var i = 0; i < height * width * 3; i = i + 3;)
+    {
+        print_int(image[i]);
+        print_string(" ");
+        print_int(image[i + 1]);
+        print_string(" ");
+        print_int(image[i + 2]);
+        print_string("\n");
+    }
+    return;
+}
+
+
+/*
+This program of ours implements a simple sphere intersection tracer using fixed-point arithmetic and
+avoiding divisions by using powers of 2.
+
+The coordinate system is the following: X (the first component) goes to the right, Y (the second)
+goes down, and Z (third) increases into the viewport.
+*/
+int program(int argc, string[] argv)
+{
+    var widthShift = length_of_string(argv[1]);
+
+    var width = 1 << widthShift;
+    var height = 1 << widthShift;
+
+    var image = new int[width * height * 3];
+
+    var camera = vec3_from(0, 0, 0);
+    var sphereCenter = vec3_from(0, 0, (10 << shift_scale));
+    var radius = 1 << (shift_scale - 1);
+
+    var viewportWidth = 1;
+    var viewportHeight = 1;
+
+    var viewportU = vec3_from(viewportWidth << shift_scale, 0, 0);
+    var viewportV = vec3_from(0, viewportHeight << shift_scale, 0);
+
+    var pixelDeltaU = vec3_copy(viewportU);
+    pixelDeltaU[0] = pixelDeltaU[0] >> widthShift;
+    var pixelDeltaV = vec3_copy(viewportV);
+    pixelDeltaV[1] = pixelDeltaV[1] >> widthShift;
+
+    var viewportUpperLeft =
+        vec3_from(-(1 << (shift_scale - 1)), -(1 << (shift_scale - 1)), (1 << shift_scale));
+
+    var pixelU = vec3_new();
+    var pixelV = vec3_new();
+    var pixelCenter = vec3_new();
+    var rayDir = vec3_new();
+    var tmp = vec3_new();
+
+    var ray = ray_create();
+
+    for (var y = 0; y < height; y = y + 1;)
+    {
+        for (var x = 0; x < width; x = x + 1;)
+        {
+            vec3_scale(pixelDeltaU, x << shift_scale, pixelU);
+            vec3_scale(pixelDeltaV, y << shift_scale, pixelV);
+
+            vec3_add(pixelU, pixelV, tmp);
+            vec3_add(viewportUpperLeft, tmp, pixelCenter);
+
+            vec3_subtract(pixelCenter, camera, rayDir);
+
+            ray_from(camera, rayDir, ray);
+
+            var colorIdx = 3 * (y * width + x);
+            if (sphere_hit(sphereCenter, radius, ray, tmp))
+            {
+                image[colorIdx] = 255;
+                image[colorIdx + 1] = 0;
+                image[colorIdx + 2] = 0;
+            }
+            else
+            {
+                image[colorIdx] = 0;
+                image[colorIdx + 1] = 0;
+                image[colorIdx + 2] = 0;
+            }
+        }
+    }
+
+    write_ppm(image, width, height);
+
+    print_string(" ");
+    return 0;
+}
