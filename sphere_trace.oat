@@ -1,3 +1,6 @@
+/*
+Name: Ben Aepli and Vedant Badoni
+*/
 global shift_scale = 16;
 
 int[] vec3_new()
