@@ -1,0 +1,100 @@
+/* Hita Gupta */
+/* Dijkstra's algorithm for finding the shortest path */
+
+global INF = 999999;
+
+int min_dist(int[] distances, bool[] visited, int n)
+{
+  var u = -1;
+  for (var i = 0; i < n; i = i + 1;) {
+    if (!visited[i]) {
+      if (u == -1) {
+        u = i;
+      } else {
+        if (distances[i] < distances[u]) {
+          u = i;
+        }
+      }
+    }
+  }
+  return u;
+}
+
+void dijkstra(int[] graph, int n, int source, int[] distances)
+{
+  var visited = new bool[n];
+  for (var i = 0; i < n; i = i + 1;) {
+    distances[i] = INF;
+    visited[i] = false;
+  }
+  distances[source] = 0;
+
+  for (var i = 0; i < n; i = i + 1;) {
+    var u = min_dist(distances, visited, n);
+    if (u == -1) {
+      i = n;
+    } else {
+      if (distances[u] == INF) {
+        i = n;
+      } else {
+        visited[u] = true;
+        for (var v = 0; v < n; v = v + 1;) {
+          var w = graph[u * n + v];
+          if (w > 0) {
+            if (distances[u] + w < distances[v]) {
+              distances[v] = distances[u] + w;
+            }
+          }
+        }
+      }
+    }
+  }
+  return;
+}
+
+void print_dist(int[] distances, int n)
+{
+  for (var i = 0; i < n; i = i + 1;) {
+    print_int(distances[i]);
+    print_string(" ");
+  }
+  return;
+}
+
+int program(int argc, string[] argv)
+{
+  var distances = new int[5];
+  var g = new int[]{
+    0, 10,  3,  0,  0,
+   10,  0,  4,  2,  0,
+    3,  4,  0,  8,  2,
+    0,  2,  8,  0,  5,
+    0,  0,  2,  5,  0
+  };
+
+  if (argc == 1) {
+    /* find all shortest paths from node 0 to each node n */
+    dijkstra(g, 5, 0, distances);
+    print_dist(distances, 5);
+    return 0;
+  } else {
+    if (argc == 2) {
+      /* shortest path from node 0 to all other nodes */
+      var chain = new int[]{
+        0, 1, 0, 0, 0,
+        1, 0, 2, 0, 0,
+        0, 2, 0, 3, 0,
+        0, 0, 3, 0, 4,
+        0, 0, 0, 4, 0
+      };
+      dijkstra(chain, 5, 0, distances);
+      print_dist(distances, 5);
+      return 0;
+    } else {
+      /* shortest path from node 2 to all other nodes */
+      dijkstra(g, 5, 2, distances);
+      print_dist(distances, 5);
+      return 0;
+    }
+  }
+}

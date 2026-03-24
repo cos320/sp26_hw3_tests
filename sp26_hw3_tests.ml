@@ -49,4 +49,9 @@ let student_tests : (string * string * string) list = [
     ("mt19937_64.oat", "6", "-67287963618453421920");
     ("mt19937_64.oat", "67", "-57951761824575148100");
     ("mt19937_64.oat", "6767676767", "69277503470687894370");
+
+    (* Hita Gupta *)
+    ("dijkstra.oat", "", "0 7 3 9 5 0");
+    ("dijkstra.oat", "x", "0 1 3 6 10 0");
+    ("dijkstra.oat", "x x", "3 4 0 6 2 0");
   ]
