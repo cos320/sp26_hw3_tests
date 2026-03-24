@@ -31,19 +31,19 @@ void dijkstra(int[] graph, int n, int source, int[] distances)
 
   for (var i = 0; i < n; i = i + 1;) {
     var u = min_dist(distances, visited, n);
+    var done = false;
     if (u == -1) {
-      i = n;
-    } else {
-      if (distances[u] == inf) {
-        i = n;
-      } else {
-        visited[u] = true;
-        for (var v = 0; v < n; v = v + 1;) {
-          var w = graph[u * n + v];
-          if (w > 0) {
-            if (distances[u] + w < distances[v]) {
-              distances[v] = distances[u] + w;
-            }
+      done = true;
+    } else if (distances[u] == inf) {
+      done = true;
+    }
+    if (!done) {
+      visited[u] = true;
+      for (var v = 0; v < n; v = v + 1;) {
+        var w = graph[u * n + v];
+        if (w > 0) {
+          if (distances[u] + w < distances[v]) {
+            distances[v] = distances[u] + w;
           }
         }
       }
@@ -72,29 +72,23 @@ int program(int argc, string[] argv)
     0,  0,  2,  5,  0
   };
 
+  var ret = 0;
   if (argc == 1) {
-    /* find all shortest paths from node 0 to each node n */
     dijkstra(g, 5, 0, distances);
     print_dist(distances, 5);
-    return 0;
+  } else if (argc == 2) {
+    var chain = new int[]{
+      0, 1, 0, 0, 0,
+      1, 0, 2, 0, 0,
+      0, 2, 0, 3, 0,
+      0, 0, 3, 0, 4,
+      0, 0, 0, 4, 0
+    };
+    dijkstra(chain, 5, 0, distances);
+    print_dist(distances, 5);
   } else {
-    if (argc == 2) {
-      /* shortest path from node 0 to all other nodes */
-      var chain = new int[]{
-        0, 1, 0, 0, 0,
-        1, 0, 2, 0, 0,
-        0, 2, 0, 3, 0,
-        0, 0, 3, 0, 4,
-        0, 0, 0, 4, 0
-      };
-      dijkstra(chain, 5, 0, distances);
-      print_dist(distances, 5);
-      return 0;
-    } else {
-      /* shortest path from node 2 to all other nodes */
-      dijkstra(g, 5, 2, distances);
-      print_dist(distances, 5);
-      return 0;
-    }
+    dijkstra(g, 5, 2, distances);
+    print_dist(distances, 5);
   }
+  return ret;
 }
