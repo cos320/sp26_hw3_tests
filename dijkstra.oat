@@ -1,7 +1,7 @@
 /* Hita Gupta */
 /* Dijkstra's algorithm for finding the shortest path */
 
-global INF = 999999;
+global inf = 999999;
 
 int min_dist(int[] distances, bool[] visited, int n)
 {
@@ -24,7 +24,7 @@ void dijkstra(int[] graph, int n, int source, int[] distances)
 {
   var visited = new bool[n];
   for (var i = 0; i < n; i = i + 1;) {
-    distances[i] = INF;
+    distances[i] = inf;
     visited[i] = false;
   }
   distances[source] = 0;
@@ -34,7 +34,7 @@ void dijkstra(int[] graph, int n, int source, int[] distances)
     if (u == -1) {
       i = n;
     } else {
-      if (distances[u] == INF) {
+      if (distances[u] == inf) {
         i = n;
       } else {
         visited[u] = true;
