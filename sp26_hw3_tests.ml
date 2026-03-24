@@ -162,4 +162,12 @@ let student_tests : (string * string * string) list = [
     ("sphere_trace.oat", SphereTrace.n_ones 6, SphereTrace.expected_trace 6 );
     ("sphere_trace.oat", SphereTrace.n_ones 7, SphereTrace.expected_trace 7 );
     ("sphere_trace.oat", SphereTrace.n_ones 8, SphereTrace.expected_trace 8 );
+
+    (* Daniel Yang (yanda-hw3) *)
+    ("bf.oat", "++++++++br++++++++l-er+o#", "A0");
+    ("bf.oat", "be++++++++++brr+r+r++++++bll+l+++rrr-ellll-ebrr+llerbrrellllbr++lb-eeroro#", "H0");
+    ("bf.oat", "++++br++++++++++l-e++++++++++r+++++++lbr+ol-e#", "01234567890");
+    ("bf.oat", "++++++++br+++++++++r+++++++++++++r++++++r++++r+++++++++++lllll-eror---o+++++++oo+++or----oror-olllo+++o------o--------orr+o#", "Hello, World!0");
+    ("bf.oat", "iribl+r-el------------------------------------------------o#34", "70");
+    ("bf.oat", "ibr+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-brr+++++bl-----r-ell-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-brr+++++bl-----r-ell-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerob-elie#abcdefghijklmnopqrstuvwxyz", "nopqrstuvwxyzabcdefghijklm0");
   ]
