@@ -170,4 +170,13 @@ let student_tests : (string * string * string) list = [
     ("bf.oat", "++++++++br+++++++++r+++++++++++++r++++++r++++r+++++++++++lllll-eror---o+++++++oo+++or----oror-olllo+++o------o--------orr+o#", "Hello, World!0");
     ("bf.oat", "iribl+r-el------------------------------------------------o#34", "70");
     ("bf.oat", "ibr+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-brr+++++bl-----r-ell-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-brr+++++bl-----r-ell-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br+l-br++++++++++++++l-br+l-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerob-elie#abcdefghijklmnopqrstuvwxyz", "nopqrstuvwxyzabcdefghijklm0");
+
+    (* Will and Grace *)
+    ("binary_gcd.oat", "", "00");
+    ("binary_gcd.oat", "0 7", "70");
+    ("binary_gcd.oat", "1 3", "10");
+    ("binary_gcd.oat", "2 5", "10");
+    ("binary_gcd.oat", "15 60", "150");
+    ("binary_gcd.oat", "198 252", "180");
+    ("binary_gcd.oat", "462 1071 ", "210");
   ]

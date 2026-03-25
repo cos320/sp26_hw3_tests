@@ -1,0 +1,56 @@
+/* Will Trojniak and Grace Sun test case
+ * Binary GCD algorithm. Expects two nonnegative integers as input
+ * and defaults both integers to 0 if insufficient input
+ */
+
+int parse_arg(string s) {
+  var len = length_of_string(s);
+  var arr = array_of_string(s);
+  var val = 0;
+  for (var i = 0; i < len; i = i + 1;) {
+    val = val * 10 + (arr[i] - 48);
+  }
+  return val;
+}
+
+/* find the greatest common divisor of u and v */
+int binary_gcd(int u, int v) {
+  if (u == 0) {
+    return v;
+  }
+  if (v == 0) {
+    return u;
+  }
+  var shift = 0;
+  while ((((u [|] v) [&] 1)) == 0) {
+    u = u >> 1;
+    v = v >> 1;
+    shift = shift + 1;
+  }
+  while ((u [&] 1) == 0) {
+    u = u >> 1;
+  }
+  while (v != 0) {
+    while ((v [&] 1) == 0) {
+      v = v >> 1;
+    }
+    if (u > v) {
+      var temp = u;
+      u = v;
+      v = temp;
+    }
+    v = v - u;
+  }
+  return u << shift;
+}
+
+int program(int argc, string[] argv) {
+  var a = 0;
+  var b = 0;
+  if (argc >= 3) {
+    a = parse_arg(argv[1]);
+    b = parse_arg(argv[2]);
+  }
+  print_int(binary_gcd(a, b));
+  return 0;
+}
