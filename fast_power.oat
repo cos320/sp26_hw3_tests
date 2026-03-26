@@ -1,0 +1,42 @@
+/* Yichi from team weeee
+ * Fast exponential.
+ */
+
+int parse_arg(string s) {
+  var len = length_of_string(s);
+  var arr = array_of_string(s);
+  var val = 0;
+  for (var i = 0; i < len; i = i + 1;) {
+    val = val * 10 + (arr[i] - 48);
+  }
+  return val;
+}
+
+int fast_pow(int x, int n) {
+  var base = x;
+  var exp = n;
+  var acc = 1;
+
+  while (exp > 0) {
+    if ((exp [&] 1) == 1) {
+      acc = acc * base;
+    }
+    base = base * base;
+    exp = exp >> 1;
+  }
+
+  return acc;
+}
+
+int program(int argc, string[] argv) {
+  var x = 2;
+  var n = 10;
+
+  if (argc >= 3) {
+    x = parse_arg(argv[1]);
+    n = parse_arg(argv[2]);
+  }
+
+  print_int(fast_pow(x, n));
+  return 0;
+}

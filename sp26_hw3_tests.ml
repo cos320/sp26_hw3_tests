@@ -186,5 +186,11 @@ let student_tests : (string * string * string) list = [
     ("LCS.oat", "e ocjsi", "00");
     ("LCS.oat", "apple elppa", "20");
     ("LCS.oat", "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz", "260");
+
+    (* Yichi *)
+    ("fast_power.oat", "0 0", "10");
+    ("fast_power.oat", "2 10", "10240");
+    ("fast_power.oat", "3 11", "1771470");
+    ("fast_power.oat", "5 7", "781250");
         
   ]
