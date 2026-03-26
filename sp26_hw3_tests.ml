@@ -179,4 +179,12 @@ let student_tests : (string * string * string) list = [
     ("binary_gcd.oat", "15 60", "150");
     ("binary_gcd.oat", "198 252", "180");
     ("binary_gcd.oat", "462 1071 ", "210");
+
+    (* John and Richard *)
+    ("LCS.oat", "abcde abcde", "50");
+    ("LCS.oat", "abcde acdxqrs", "30");
+    ("LCS.oat", "e ocjsi", "00");
+    ("LCS.oat", "apple elppa", "20");
+    ("LCS.oat", "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz", "260");
+        
   ]
