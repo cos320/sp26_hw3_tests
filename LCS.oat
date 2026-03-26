@@ -25,13 +25,8 @@ int solve(string string1, string string2) {
     var len2 = length_of_string(string2);
 
     /* initialize 2d dp array to store subproblem results */
-    var dp = new int[][len1+1];
-    for (var c = 0; c <= len1; c = c + 1;) {
-        dp[c] = new int[len2+1];
-        for (var k = 0; k <= len2; k = k + 1;) {
-            dp[c][k] = 0;
-        }
-    }
+    /* expects max length of each string to be 100 */
+    var dp = new int[101][101];
 
     /* 
     * start iterating over the substrings of string1
