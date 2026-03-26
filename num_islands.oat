@@ -1,0 +1,128 @@
+/*
+Test case for Arnav Ambre.
+Use DFS to find the number of islands in a given 10x10 map.
+Land = 1, Water = 0, the map is a 10x10 2D array of 1s and 0s.
+
+(this is probably my favorite Leetcode problem)
+*/
+
+global visited = bool[][] null;
+global map = int[][] null;
+
+global num_rows = 10;
+global num_cols = 10;
+
+int get_int_from_char(int c) {
+    return c - 48;
+}
+
+bool is_valid(int r, int c) {
+    if (r < 0 | r >= num_rows) {
+        return false;
+    }
+    if (c < 0 | c >= num_cols) {
+        return false;
+    }
+    return true;
+}
+
+void dfs(int r, int c) {
+    visited[r][c] = true;
+
+    if (is_valid(r + 1, c)) {
+        if (map[r + 1][c] == 1 & !visited[r + 1][c]) {
+            dfs(r + 1, c);
+        }
+    }
+
+    if (is_valid(r - 1, c)) {
+        if (map[r - 1][c] == 1 & !visited[r - 1][c]) {
+            dfs(r - 1, c);
+        }
+    }
+
+    if (is_valid(r, c + 1)) {
+        if (map[r][c + 1] == 1 & !visited[r][c + 1]) {
+            dfs(r, c + 1);
+        }
+    }
+
+    if (is_valid(r, c - 1)) {
+        if (map[r][c - 1] == 1 & !visited[r][c - 1]) {
+            dfs(r, c - 1);
+        }
+    }
+
+    return;
+}
+
+int program(int argc, string[] argv)
+{
+    var success_ret_code = 0;
+    var failure_ret_code = 1;
+
+    if (argc != num_rows + 1) {
+        print_string("Please pass in 10 strings of length 10 of 0s and 1s");
+        return failure_ret_code;
+    }
+
+    visited = new bool[][] {
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols],
+        new bool[num_cols]
+    };
+
+    map = new int[][] {
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols],
+        new int[num_cols]
+    };
+
+    var num_islands = 0;
+
+    for (var i = 1; i < argc; i = i + 1;) {
+        var curr_row_string = argv[i];
+        if (length_of_string(curr_row_string) != num_cols) {
+            print_string("Each row must have 10 columns");
+            return failure_ret_code;
+        }
+
+        var row_arr = array_of_string(curr_row_string);
+        for (var j = 0; j < num_cols; j = j + 1;) {
+            var map_cell = get_int_from_char(row_arr[j]);
+
+            if (map_cell != 0 & map_cell != 1) {
+                print_string("Each row must be made up of 0s and 1s");
+                return failure_ret_code;
+            }
+
+            map[i - 1][j] = map_cell;
+        }
+    }
+
+    for (var r = 0; r < num_rows; r = r + 1;) {
+        for (var c = 0; c < num_cols; c = c + 1;) {
+            if (map[r][c] == 1 & !visited[r][c]) {
+                num_islands = num_islands + 1;
+                dfs(r, c);
+            }
+        }
+    }
+
+    print_int(num_islands);
+    return success_ret_code;
+}

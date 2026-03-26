@@ -139,6 +139,7 @@ let student_tests : (string * string * string) list = [
     (* provided demo example *)
     ("demo_test.oat", "abc", "abcabc0");
     ("demo_test.oat", "defg", "defgdefg0");
+
     (* Colin Baird, Jishnu Roychoudhury *)
     ("nac_k.oat", "", "50");
     ("nac_k.oat", "test2", "impossible0");
@@ -157,7 +158,7 @@ let student_tests : (string * string * string) list = [
     ("dijkstra.oat", "", "0 7 3 9 5 0");
     ("dijkstra.oat", "x", "0 1 3 6 10 0");
     ("dijkstra.oat", "x x", "3 4 0 6 2 0");
-    
+
     (* Ben Aepli and Vedant Badoni *)
     ("sphere_trace.oat", SphereTrace.n_ones 6, SphereTrace.expected_trace 6 );
     ("sphere_trace.oat", SphereTrace.n_ones 7, SphereTrace.expected_trace 7 );
@@ -192,5 +193,31 @@ let student_tests : (string * string * string) list = [
     ("fast_power.oat", "2 10", "10240");
     ("fast_power.oat", "3 11", "1771470");
     ("fast_power.oat", "5 7", "781250");
-        
+
+    (* Arnav *)
+    (
+      "num_islands.oat",
+      "0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000 0000000000",
+      "00"
+    );
+    (
+      "num_islands.oat",
+      "1111111111 1111111111 1111111111 1111111111 1111111111 1111111111 1111111111 1111111111 1111111111 1111111111",
+      "10"
+    );
+    (
+      "num_islands.oat",
+      "1010101010 0101010101 1010101010 0101010101 1010101010 0101010101 1010101010 0101010101 1010101010 0101010101",
+      "500"
+    );
+    (
+      "num_islands.oat",
+      "1110000111 1010000101 1110000111 0000000000 0011100000 0010100000 0011100000 0000000110 0000000110 0000000000",
+      "40"
+    );
+    (
+      "num_islands.oat",
+      "1100000011 1100000011 0001100000 0001100000 0000001100 0000001100 0010000000 0010000000 0000010000 0000010000",
+      "60"
+    );
   ]
