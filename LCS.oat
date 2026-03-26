@@ -25,8 +25,13 @@ int solve(string string1, string string2) {
     var len2 = length_of_string(string2);
 
     /* initialize 2d dp array to store subproblem results */
-    /* expects max length of each string to be 100 */
-    var dp = new int[101][101];
+    /* expects max length of each string to be 11 */
+    var dp = new int[][]{new int[12], new int[12],
+                        new int[12], new int[12],
+                        new int[12], new int[12],
+                        new int[12], new int[12],
+                        new int[12], new int[12],
+                        new int[12], new int[12]};
 
     /* 
     * start iterating over the substrings of string1
@@ -60,12 +65,12 @@ int program(int argc, string[] argv) {
         return 0;
     }
 
-    s1 = argv[1];
-    s2 = argv[2];
+    var s1 = argv[1];
+    var s2 = argv[2];
 
     /* make sure that answers are the same */
-    ans1 = solve(s1, s2);
-    ans2 = solve(s2, s1);
+    var ans1 = solve(s1, s2);
+    var ans2 = solve(s2, s1);
 
     if (ans1 != ans2) {
         print_string("INCORRECT");

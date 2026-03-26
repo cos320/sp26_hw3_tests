@@ -185,7 +185,7 @@ let student_tests : (string * string * string) list = [
     ("LCS.oat", "abcde acdxqrs", "30");
     ("LCS.oat", "e ocjsi", "00");
     ("LCS.oat", "apple elppa", "20");
-    ("LCS.oat", "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz", "260");
+    ("LCS.oat", "cosisbest matisbest", "60");
 
     (* Yichi *)
     ("fast_power.oat", "0 0", "10");
